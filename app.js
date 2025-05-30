@@ -103,10 +103,19 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'image/png') {
+    // Accept common image formats
+    const allowedMimeTypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/gif'
+    ];
+
+    if (allowedMimeTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only PNG files are allowed'), false);
+      cb(new Error(`Only image files are allowed. Supported formats: PNG, JPEG, JPG, WebP, GIF. Received: ${file.mimetype}`), false);
     }
   }
 });
